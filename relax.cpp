@@ -88,12 +88,23 @@ int main() {
     0.0, 0.0, 0.0, 0.0, 0.0
   };
 
+  int its = 2;
   Relax *r = new Relax(a_3, r_2);
   int l = 0;
+  int dps = 4;
+  vector<float> p_new;
 
-  for (int i = 0; i < 25; ++i) {
-    cout << setprecision(4) << (r->p_next(i, l)) << "\t";
-    if ((i + 1) % 5 == 0) cout << endl;
+  for (int it = 1; it <= its; ++it) {
+    p_new = {};
+    cout << "ITERATION " << it << ":" << endl;
+  cout << "---------------------------------------" << endl;
+    for (int i = 0; i < r->N; ++i) {
+      float next = r->p_next(i, l);
+      p_new.push_back(next);
+      cout << setprecision(dps) << next << "\t";
+      if ((i + 1) % 5 == 0) cout << endl;
+    }
+    r = new Relax(p_new, r_2);
   }
 
   delete r;
