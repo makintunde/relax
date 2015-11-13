@@ -1,21 +1,15 @@
 #include "relax.h"
 
-Relax::Relax() {
+Relax::Relax(vector<float> a, vector< vector<int> > r) : a_(a), r_(r) {
   for (int i = 0; i < a_.size(); ++i) 
     b_.push_back(1 - a_[i]);
   c_.push_back(a_);
   c_.push_back(b_);
 
-  cout << "a: " << endl;
-  for (int i = 0; i < a_.size(); ++i) {
-    cout << a_[i] << "\t";
-    if ((i+1)%5 == 0) cout << endl;
-  }
   cout << "---------------------------------------" << endl;
-  for (int i = 0; i < b_.size(); ++i) {
-    cout << b_[i] << "\t";
-    if ((i+1)%5 == 0) cout << endl;
-  }
+}
+
+Relax::~Relax() {
   cout << "---------------------------------------" << endl;
 }
 
@@ -59,14 +53,48 @@ float Relax::p_next(int i, int l) {
 }
 
 int main() {
-  Relax *r = new Relax();
-  vector<float> q_new;
+
+  vector< vector<int> > r_1 = {
+    {1, 1},
+    {1, 1}
+  };
+
+  vector< vector<int> > r_2 = {
+    {2, 1},
+    {1, 1}
+  };
+
+  vector<float> a_1 = {
+    0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.1, 0.1, 0.1, 0.0,
+    0.0, 0.1, 0.9, 0.0, 0.0,
+    0.0, 0.1, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0
+  };
+
+  vector<float> a_2 = {
+    0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 1.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0
+  };
+
+  vector<float> a_3 = {
+    0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.1, 0.1, 0.1, 0.0,
+    0.0, 0.1, 1.0, 0.1, 0.0,
+    0.0, 0.1, 0.1, 0.1, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0
+  };
+
+  Relax *r = new Relax(a_3, r_2);
   int l = 0;
-  r->p_next(0,0);
-  for (int i=0; i<25; ++i) {
+
+  for (int i = 0; i < 25; ++i) {
     cout << setprecision(4) << (r->p_next(i, l)) << "\t";
-    if ((i+1)%5==0) cout << endl;
+    if ((i + 1) % 5 == 0) cout << endl;
   }
+
   delete r;
- 
 }
