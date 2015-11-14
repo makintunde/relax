@@ -1,10 +1,11 @@
 #include "relax.h"
 
 Relax::Relax(vector<float> a, vector< vector<int> > r) : a_(a), r_(r) {
-  for (int i = 0; i < a_.size(); ++i) 
+  for (size_t i = 0; i < a_.size(); ++i) 
     b_.push_back(1 - a_[i]);
   c_.push_back(a_);
   c_.push_back(b_);
+  n_ = sqrt(a.size());
 
   cout << "---------------------------------------" << endl;
 }
@@ -52,6 +53,10 @@ float Relax::p_next(int i, int l) {
   return top ? (top / bottom) : 0;
 }
 
+int Relax::get_n() {
+  return pow(n_,2);
+}
+
 int main() {
 
   vector< vector<int> > r_1 = {
@@ -89,16 +94,18 @@ int main() {
   };
 
   int its = 2;
+  //TODO: Allow reading from a file for larger matrices.
   Relax *r = new Relax(a_3, r_2);
   int l = 0;
   int dps = 4;
+  int n = r->get_n();
   vector<float> p_new;
 
   for (int it = 1; it <= its; ++it) {
     p_new = {};
     cout << "ITERATION " << it << ":" << endl;
-  cout << "---------------------------------------" << endl;
-    for (int i = 0; i < r->N; ++i) {
+    cout << "---------------------------------------" << endl;
+    for (int i = 0; i < n; ++i) {
       float next = r->p_next(i, l);
       p_new.push_back(next);
       cout << setprecision(dps) << next << "\t";
