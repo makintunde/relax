@@ -93,9 +93,18 @@ int main() {
     0.0, 0.0, 0.0, 0.0, 0.0
   };
 
+  vector<float> dat;
+
+  ifstream inputFile("pixels.dat");
+
+  if (inputFile) {
+    float next;
+    while (inputFile >> next) dat.push_back(next);
+  }
+
   int its = 2;
   //TODO: Allow reading from a file for larger matrices.
-  Relax *r = new Relax(a_3, r_2);
+  Relax *r = new Relax(dat, r_2);
   int l = 0;
   int dps = 4;
   int n = r->get_n();
@@ -113,6 +122,6 @@ int main() {
     }
     r = new Relax(p_new, r_2);
   }
-
+  //TODO: Is this a memory leak?
   delete r;
 }
