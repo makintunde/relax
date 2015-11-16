@@ -57,7 +57,7 @@ int Relax::get_n() {
   return pow(n_,2);
 }
 
-int main() {
+int main(int argc, char *argv[]) {
 
   vector< vector<int> > r_1 = {
     {1, 1},
@@ -93,35 +93,40 @@ int main() {
     0.0, 0.0, 0.0, 0.0, 0.0
   };
 
-  vector<float> dat;
+  if (argc != 3) {
+    cout << "Please provide an input file and iteration amount." << endl;
+  } else {
+    vector<float> dat;
 
-  ifstream inputFile("pixels.dat");
+    ifstream input_file(argv[1]);
 
-  if (inputFile) {
-    float next;
-    while (inputFile >> next) dat.push_back(next);
-  }
-
-  int its = 2;
-  //TODO: Allow reading from a file for larger matrices.
-  Relax *r = new Relax(dat, r_2);
-  int l = 0;
-  int dps = 4;
-  int n = r->get_n();
-  vector<float> p_new;
-
-  for (int it = 1; it <= its; ++it) {
-    p_new = {};
-    cout << "ITERATION " << it << ":" << endl;
-    cout << "---------------------------------------" << endl;
-    for (int i = 0; i < n; ++i) {
-      float next = r->p_next(i, l);
-      p_new.push_back(next);
-      cout << setprecision(dps) << next << "\t";
-      if ((i + 1) % 5 == 0) cout << endl;
+    if (input_file) {
+      float next;
+      while (input_file >> next) dat.push_back(next);
     }
-    r = new Relax(p_new, r_2);
+
+    Relax *r = new Relax(dat, r_2);
+
+    int its = atoi(argv[2]);
+    int l = 0;
+    int dps = 4;
+    int n = r->get_n();
+    vector<float> p_new;
+
+    for (int it = 1; it <= its; ++it) {
+      p_new = {};
+      cout << "ITERATION " << it << ":" << endl;
+      cout << "---------------------------------------" << endl;
+      for (int i = 0; i < n; ++i) {
+        float next = r->p_next(i, l);
+        p_new.push_back(next);
+        cout << setprecision(dps) << next << "\t";
+        if ((i + 1) % 5 == 0) cout << endl;
+      }
+      r = new Relax(p_new, r_2);
+    }
+    //TODO: Is this a memory leak?
+    delete r;
+    
   }
-  //TODO: Is this a memory leak?
-  delete r;
 }
