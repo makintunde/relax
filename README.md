@@ -14,6 +14,8 @@ Provide input file, e.g. `pixels.dat`, consisting of the initial edge probabilit
   0.0 0.1 1.0 0.1 0.0
   0.0 0.1 0.1 0.1 0.0
   0.0 0.0 0.0 0.0 0.0
+  
+  "pixels.dat" 5L, 115C   
 ```
 
 Run program with the input file and iteration amount:
